@@ -66,6 +66,8 @@ for lang in labels:
     # Localized, crawlable structured data rather than English-only copy.
     structured={'@context':'https://schema.org','@type':'WebSite','name':'Garden Journal: Planner','url':url(lang),'description':meta[1],'inLanguage':lang}
     head=re.sub(r'<script type="application/ld\+json">.*?</script>','<script type="application/ld+json">'+json.dumps(structured,ensure_ascii=False)+'</script>',head)
+    organization={'@context':'https://schema.org','@type':'Organization','name':'Garden Shed Clay','url':'https://gardenshedclay.com/'}
+    head=head.replace('</head>','<script type="application/ld+json">'+json.dumps(organization,ensure_ascii=False)+'</script></head>')
     body=body.replace('aria-label="Main navigation"','aria-label="'+html.escape(meta[3],quote=True)+'"')
     body=re.sub(r'alt="Garden Journal dashboard[^"]*"','alt="'+html.escape(meta[4],quote=True)+'"',body)
     menu = '<details class="language-picker"><summary aria-label="'+html.escape(meta[2]+': '+labels[lang],quote=True)+'">'+flag(lang)+'<span class="selected-language">'+labels[lang]+'</span><span class="language-chevron" aria-hidden="true">⌄</span></summary><ul class="language-options">'+''.join('<li><a href="'+url(code)+'" lang="'+code+'" hreflang="'+code+'"'+(' aria-current="page"' if code==lang else '')+'>'+flag(code)+'<span>'+label+'</span></a></li>' for code,label in labels.items())+'</ul></details>'
